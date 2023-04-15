@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+  <settings>
+    <!-- 카멜케이스 적용 -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <!-- null 컬럼 출력 -->
+    <setting name="callSettersOnNulls" value="false"/>
+    <!-- row null 출력 -->
+    <setting name="returnInstanceForEmptyRow" value="true"/>
+  </settings>
+
+
+  <!-- 별칭 -->
+  <!-- 매퍼에 패키지명 전부 작성필요x-->
+  <typeAliases>
+    <typeAlias type="java.lang.Integer" alias="Integer" />
+    <typeAlias type="java.lang.Long" alias="Long" />
+    <typeAlias type="java.util.HashMap" alias="HashMap" />
+    <typeAlias type="java.util.LinkedHashMap" alias="LinkedHashMap" />
+    <typeAlias type="java.util.ArrayList" alias="ArrayList" />
+    <typeAlias type="java.util.LinkedList" alias="LinkedList" />
+    <!-- mapper의 result type을 편리하게 작성하기 위한 예시 코드-->
+    <typeAlias type="gopos.sample.vo.SampleVO" alias="SampleVO"/>
+  </typeAliases>
+
+</configuration>

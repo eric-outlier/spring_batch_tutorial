@@ -1,0 +1,19 @@
+@startuml
+
+left to right direction
+
+entity "A_TB" as aTb {
+  A_PID : int <<pk>>
+  --
+  A_NM : VARCHAR(100)
+}
+
+entity "B_TB" as bTb {
+  B_PID : int <<pk>>
+  --
+  B_CODE : VARCHAR(7)
+  CREATED_AT : TIMESTAMP
+  UPDATED_AT : TIMESTAMP
+}
+
+@enduml

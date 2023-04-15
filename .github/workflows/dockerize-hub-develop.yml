@@ -1,0 +1,57 @@
+name: Dockerizing And Builder Hook
+
+# ===========================
+# Github Actions 동작 조건 정의
+# ===========================
+on:
+  push:
+    branches: # 해당 브랜치에 push, pr 발생하면 Github Actions 동작
+      - develop
+    paths:    # 해당 경로에 있는 파일이 수정되면 Github Actions 동작
+      - ".github/workflows/**"
+      - "etc/Dockerfile"
+      - "src/**"
+      - "pom.xml"
+
+# ===========================
+#  작업에서 사용될 환경변수 정의
+# ===========================
+env:
+  API_PORT: 274?? # 컨테이너 API 접근 포트 **(프로젝트 별로 변경해줘야 함!)
+  DOCKER_HUB_ID: [ID]                                                    # Docker Hub 아이디
+  DOCKER_HUB_PW: [PW]                                                    # Docker Hub 암호
+  DOCKER_HUB_NAME: [NAME]                                                # Docker Hub 계정명
+  DOCKER_HUB_REPO: [REPO]/${{github.event.repository.name}}              # Docker Hub 레포지토리명
+  DOCKER_IMAGE: [NAME]/[REPO]/${{github.event.repository.name}}          # Docker 이미지명
+  GIT_REPO: ${{github.event.repository.name}}                            # Git 레포지토리명
+  BRANCH: develop                                                        # 브랜치
+  BUILDER_URL: [URL]                                                     # 빌더서버 URL
+
+# ===========================
+#    Actions 작업 내용 정의
+# ===========================
+jobs:
+  docker:
+    name: Push Image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker Hub Login
+        run: docker login $DOCKER_HUB_NAME -u $DOCKER_HUB_ID -p $DOCKER_HUB_PW
+      - name: Building Docker Image
+        run: docker build -t $DOCKER_IMAGE:latest . -f ./etc/Dockerfile
+      - name: Publish Docker Image
+        run: docker push $DOCKER_IMAGE
+  hook:
+    name: Hook
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - uses: actions/checkout@v2
+      - name: Send Web Hook
+        run: |
+          curl \
+          -X POST \
+          -H "Content-type:application/json" \
+          -d '{"repository":"${{env.GIT_REPO}}", "apiPort":"${{env.API_PORT}}", "branch":"${{env.BRANCH}}", "dockerImage":"${{env.DOCKER_IMAGE}}"}' \
+          "${{env.BUILDER_URL}}"

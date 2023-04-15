@@ -1,0 +1,27 @@
+@startuml Sample Usecase
+
+left to right direction
+
+actor "샘플MSA" as 샘플MSA <<system>>
+actor "사용자" as user
+
+package 패키지A{
+  usecase API1 AS UC11
+  usecase API2 AS UC12
+}
+
+package 패키지B{
+  usecase API1 AS UC21
+  usecase API2 AS UC22
+}
+
+' 사용자
+user --> UC11
+user --> UC12
+UC21 <-- user
+UC22 <-- user
+
+' 시스템
+UC21 --> 샘플MSA
+
+@enduml

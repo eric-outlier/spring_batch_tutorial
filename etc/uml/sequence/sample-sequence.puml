@@ -1,0 +1,63 @@
+@startuml Sample Sequence
+
+actor "사용자" as user
+participant "Controller" as controller
+participant "Service" as service
+participant "DAO" as dao
+database "DB" as db
+
+' API1
+user -> controller : 1번API
+activate controller
+controller -> service : void
+activate service
+service -> dao: void
+activate dao
+dao -> db: void
+activate db
+dao <-- db: List
+deactivate db
+service <-- dao: List
+deactivate dao
+controller <-- service: List
+deactivate service
+user <-- controller: ResObj
+deactivate controller
+
+' API2
+user -> controller : 2번API
+activate controller
+controller -> service : (sampleVO)
+activate service
+service -> dao: (sampleVO)
+activate dao
+dao -> db: (sampleVO)
+activate db
+dao <-- db: boolean
+deactivate db
+service <-- dao: boolean
+deactivate dao
+controller <-- service: boolean
+deactivate service
+user <-- controller: ResObj
+deactivate controller
+
+' API3
+user -> controller : 3번API(userNm, userPw)
+activate controller
+controller -> service : Hashmap(userNm, userPw)
+activate service
+service -> dao: Hashmap(userNm, userPw)
+activate dao
+dao -> db: Hashmap(userNm, userPw)
+activate db
+dao <-- db: Hashmap
+deactivate db
+service <-- dao: Hashmap
+deactivate dao
+controller <-- service: Hashmap
+deactivate service
+user <-- controller: ResObj
+deactivate controller
+
+@enduml

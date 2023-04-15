@@ -1,0 +1,32 @@
+@startuml
+
+left to right direction
+
+class SampleController {
+  JSONObject getAllSample()
+  JSONObject getSample(String samplePid)
+  JSONObject addSample(HashMap map)
+  JSONObject updateSample(HashMap map)
+  JSONObject deleteSample(HashMap map)
+}
+
+class SampleService {
+  ResObj getAllSample()
+  ResObj getSample(HashMap obj)
+  ResObj addSample(HashMap map)
+  ResObj updateSample(HashMap map)
+  ResObj deleteSample(HashMap map)
+}
+
+interface SampleDAO {
+  List<HashMap> getAllSample()
+  HashMap getSample(HashMap obj)
+  ResObj addSample(HashMap map)
+  ResObj updateSample(HashMap map)
+  ResObj deleteSample(HashMap map)
+}
+
+SampleController ..> SampleService
+SampleService ..> SampleDAO
+
+@enduml
